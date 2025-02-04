@@ -7,7 +7,7 @@ This repository contains the codes used for **simulation and real-data analyses*
 For the **command-line tool** of **JointPRS**, please visit: [https://github.com/LeqiXu/JointPRS](https://github.com/LeqiXu/JointPRS)
 
 ## Evaluation and Comparison  
-The efficacy of **JointPRS** is evaluated through **extensive simulations and real-data applications** to **22 quantitative traits and 4 binary traits** across **five continental populations** (EUR, EAS, AFR, SAS, AMR), using data from **UK Biobank (UKBB) and All of Us (AoU)**.  
+The efficacy of JointPRS is evaluated through **extensive simulations** and **real-data applications to 22 quantitative traits and 4 binary traits** across **five continental populations** (EUR, EAS, AFR, SAS, AMR), using data from **UK Biobank (UKBB) and All of Us (AoU)**.  
 
 JointPRS is asses under **three data scenarios**:  
 - No tuning data available
