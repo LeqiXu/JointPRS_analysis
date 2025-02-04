@@ -10,21 +10,21 @@ For the **command-line tool** of **JointPRS**, please visit: [https://github.com
 The efficacy of **JointPRS** is evaluated through **extensive simulations and real-data applications** to **22 quantitative traits and 4 binary traits** across **five continental populations** (EUR, EAS, AFR, SAS, AMR), using data from **UK Biobank (UKBB) and All of Us (AoU)**.  
 
 JointPRS is asses under **three data scenarios**:  
-1. **No tuning data available**  
-2. **Tuning and testing data from the same cohort**  
-3. **Tuning and testing data from different cohorts**  
+- No tuning data available
+- Tuning and testing data from the same cohort
+- Tuning and testing data from different cohorts  
 
 JointPRS is compared with **six state-of-the-art PRS methods**:  
-- **SDPRX**  
-- **XPASS**  
-- **PRS-CSx**  
-- **MUSSEL**  
-- **PROSPER**  
-- **BridgePRS**  
+- SDPRX  
+- XPASS  
+- PRS-CSx  
+- MUSSEL  
+- PROSPER  
+- BridgePRS
 
 ## Directory Structure  
-- `simulation/` – Contains scripts for **simulation studies** evaluating JointPRS and six exsiting methods under different settings.  
-- `real_data/` – Contains scripts for **real data analysis** evaluating JointPRS and six exsiting methods with 22 quantitative traits and 4 binary traits in UKBB and AoU.  
+- `Simulation/` – Contains scripts for **simulation studies** evaluating JointPRS and six exsiting methods under different settings.  
+- `Real_data/` – Contains scripts for **real data analysis** evaluating JointPRS and six exsiting methods with 22 quantitative traits and 4 binary traits in UKBB and AoU.  
 
 ## Support
 Please direct any problems or questions to Leqi Xu (leqi.xu@yale.edu).
