@@ -1,0 +1,39 @@
+This depository contains the simulated data for 600,000 sujects from five ancestries. The details of the simulation can be found in
+Zhang, Haoyu, et al. "Novel Methods for Multi-ancestry Polygenic Prediction and their Evaluations in 5.1 Million Individuals of Diverse Ancestry" Biorxiv (2022).
+
+The directory contains four subdirectories: SnpInfor, PhentoypeData, GenotypeData and SummaryData. Due to the file size limit of Harvard Dataverse, we restrict the genotype data and summary data to ~2.0 million SNPs on HapMap3 (HM3) or Multi-Ethnic Genotyping Arrays (MEGA) chip arrays, or both. If you need the genotype or summary data for all ~19 million SNPs based on the 1000 Genomes Project (1KG), please contact Haoyu Zhang (andrew.haoyu@gmail.com). Here we describe the file details of each subdirectory. 
+
+##SNPInfor##
+snp_infor_1kg.zip file contains the SNP information for ~19 million SNPs from the 1KG project. It contains the following columns: 1. SNP ID in 1KG project. It's coded in rsid:position:allele1:allele2 or CHR:position:allele1:allele2; 2. CHR; 3. position (GRCh37); 4. TYPE (we restrict analyses to Biallelic_SNP only); 5. Allele frequencies of the allele2 in AFR, AMR, EAS, EUR, SAS, and all five ancestries combined; 6. rs_id. Not all SNPs have rs id.
+
+mega-hm3-rsid.txt file contains the SNP on HM3 or MEGA chip arrays, or both. There are around ~2.6 million SNPs on it.
+
+snp_infor_mega+hm3.zip is a subset of snp_infor_1kg.zip. It contains the SNPs on HM3 or MEGA chip arrays, or both. We match the SNPs based on the rs id in mega-hm3-rsid.txt. After the mathcing, there are around ~2.0 million SNPs on it.  
+
+
+##GenotypeData##
+The genotype data contains 600,000 independent subjects data from five ancestries. Each ancestry includes 120,000 subjects. The data are under PLINK format with bed, bim, and fam files. Since the per file size limit on Harvard DataVerse is 2.5Gb, we zipped all the bed files that are more than 2.5Gb. The genotype data is coded as 0, 1, 2 with the minor allele as the reference in the population.
+
+##PhenotypesData##
+Each of the phenotype data contains 12 columns. The first two columns are family ID and individual ID. Column 3-12 are ten different simulation replicates. The phenotyp file is named as pheno_rho_**_GA_**.  
+
+rho controls causal SNPs proportion. rho is set to be 1, 2, 3 with the causal SNPs proportions as 0.01, 0.001, 0.0005. The casual SNPs are randomly selected among all the ~19 million SNPs on the 1KG reference panel, which are not necessarily on the HM3 + MEGA reference panel.
+
+GA controls the genetic architecture. GA are set to be 1 to 5, which represents five different genetic architecture settings. 
+
+GA =1: strong negative selection, common SNPs heritability fixed as 0.4 for each of the five ancestries, cross-ancestry genetic architecture as 0.8. Figure 2 and Supplementary Figure 2 in the Biorxiv preprint are based on this genetic architecture.
+
+GA=2: strong negative selection, fixed per-SNP heritability for each of the five ancestries, cross-ancestry genetic architecture as 0.8. Supplementary Figure  5 in the Biorxiv preprint is based on this genetic architecture.
+
+GA=3: strong negative selection, fixed per-SNP heritability for each of the five ancestries, cross-ancestry genetic architecture as 0.6. Supplementary Figure  6  in the Biorxiv preprint is based on this genetic architecture.
+
+GA=4: no negative selection, common SNPs heritability fixed as 0.4 for each of the five ancestries, cross-ancestry genetic architecture as 0.8. Supplementary Figure  4  in the Biorxiv preprint is based on this genetic architecture.
+
+GA=5: mild negative selection, common SNPs heritability fixed as 0.4 for each of the five ancestries, cross-ancestry genetic architecture as 0.8. Supplementary Figure  3  in the Biorxiv preprint is based on this genetic architecture.
+
+##SummaryData##
+Each of the summary statistics contains 34 columns. The first column is SNP ID in 1000 Genomes Reference. It's coded as rsid:position:allele1:allele2 or CHR:position:allele1:allele2. The second column is CHR. The third column is position (GRCh37). The fourth column is the effect allele. Note that the effect allele is not always the allele2 because PLINK 1.9 always uses the minor allele as the effect allele. Columns 5-34 are the effect size, standard error, and p-value for ten different replicates. The summary statistics file is named as summary_rho_**_size_**_GA_**.   
+
+rho and GA represent causal SNPs proportion and genetic architecture, respectively, which use the same definition as the phenotypes data. The size parameter represents the training sample size to generate the GWAS summary statistics. 
+
+size is set to be 1, 2, 3, 4 with the training sample size as 15,000, 45,000, 80,000 and 100,000 subjects, respectively. In all analyses, we keep the 10,000 subjects with ID number 100,001-110,000 as the tuning dataset; and keep the 10,000 with ID number 110,001-120,000 as the validation dataset. Since the subjects are randomly generated, we always choose the training data sequentially from the first subject. For example, when we set the training sample size as 15,000, we run GWAS analyses using subjects with ID numbers 1-15,000. When we set the training sample size as 100,000, we run GWAS analyses using subjects with ID numbers 1-100,000. 
