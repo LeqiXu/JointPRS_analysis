@@ -1,0 +1,145 @@
+# 3.1  Blood data
+# 3.1.1 Blood sumstat cleaning
+## EUR_pop
+library(readr)
+library(data.table)
+library(stringr)
+  
+for (trait in c("WBC","NEU","LYM","MON","EOS","RBC","HCT","MCH","MCV")){
+pop = "EUR"
+
+# sumstat obtain
+sumstat = read_delim(paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/",trait,"_",pop,"_sumstat.gz"))
+sumstat[sumstat$`p-value`<1e-323,"p-value"] = 1e-323
+sumstat$CHR = str_split_fixed(sumstat$rs_number,":",2)[,1]
+sumstat$POS = str_split_fixed(sumstat$rs_number,":",2)[,2]
+sumstat$POS = str_split_fixed(sumstat$POS,"_",3)[,1]
+sumstat$CHR = as.integer(sumstat$CHR)
+sumstat$POS = as.integer(sumstat$POS)
+
+sumstat = sumstat[,c("CHR","POS","p-value","reference_allele","other_allele","eaf","beta","se","z","n_samples")]
+colnames(sumstat) = c("CHR","POS","P","A1","A2","MAF","BETA","SE","Z","N")
+
+# SNP restriction
+snp_1kg = fread(paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/data/ref_data/PRScsx/1kg/ldblk_1kg_",tolower(pop),"/snpinfo_1kg_hm3"))
+snp_inter = fread(paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/data/snplist_data/",pop,"_inter_snplist.txt"),header=F)
+colnames(snp_1kg)[3] = "POS"
+sumstat_inter = merge(sumstat,snp_1kg[,c("SNP","CHR","POS")],by=c("CHR","POS"))
+sumstat_inter = na.omit(sumstat_inter)
+sumstat_inter = sumstat_inter[sumstat_inter$SNP %in% snp_inter$V1,]
+sumstat_inter = sumstat_inter[!duplicated(sumstat_inter$SNP),]
+sumstat_inter$POS = as.integer(sumstat_inter$POS)
+
+print(paste0(trait," ", pop, " inter snp size: ", nrow(sumstat_inter)))
+write.table(sumstat_inter, file=paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/",trait,"_",pop,"_inter.txt"), row.names=F, col.names=T, quote=F, append=F, sep = "\t")
+    
+# ldsc
+sumstat_inter_ldsc = sumstat_inter[,c("SNP","A1","A2","N","P","Z")]
+write.table(sumstat_inter_ldsc, file=paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/",trait,"_",pop,"_inter_ldsc.txt"), row.names=F, col.names=T, quote=F, append=F, sep = "\t")
+
+## EAS_pop
+pop = "EAS"
+
+# sumstat obtain
+sumstat = read_tsv(paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/",trait,"_",pop,"_sumstat.gz"))
+sumstat[sumstat$P_LINREG<1e-323,"P_LINREG"] = 1e-323
+sumstat$Z = sumstat$BETA / sumstat$SE
+sumstat$N = 179000
+sumstat = sumstat[!duplicated(sumstat$SNP),c("SNP","CHR","BP","ALLELE1","ALLELE0","A1FREQ","BETA","SE","P_LINREG","Z","N")]
+colnames(sumstat) = c("SNP","CHR","POS","A1","A2","MAF","BETA","SE","P","Z","N")
+
+# SNP restriction
+snp_inter = fread(paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/data/snplist_data/",pop,"_inter_snplist.txt"),header=F)
+sumstat_inter = na.omit(sumstat)
+sumstat_inter = sumstat_inter[sumstat_inter$SNP %in% snp_inter$V1,]
+
+print(paste0(trait," ", pop, " inter snp size: ", nrow(sumstat_inter)))
+write.table(sumstat_inter, file=paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/",trait,"_",pop,"_inter.txt"), row.names=F, col.names=T, quote=F, append=F, sep = "\t")
+    
+# ldsc
+sumstat_inter_ldsc = sumstat_inter[,c("SNP","A1","A2","N","P","Z")]
+write.table(sumstat_inter_ldsc, file=paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/",trait,"_",pop,"_inter_ldsc.txt"), row.names=F, col.names=T, quote=F, append=F, sep = "\t")
+}
+
+# 3.1.2 Blood ldsc
+## SNP size
+## WBC EUR_inter:800320 EAS_inter:747306
+## NEU EUR_inter:800319 EAS_inter:747306
+## LYM EUR_inter:800320 EAS_inter:747306
+## MON EUR_inter:800320 EAS_inter:747306
+## EOS EUR_inter:800319 EAS_inter:747306
+## RBC EUR_inter:800318 EAS_inter:747306
+## HCT EUR_inter:800319 EAS_inter:747306
+## MCH EUR_inter:800319 EAS_inter:747306
+## MCV EUR_inter:800317 EAS_inter:747306
+
+for trait in WBC NEU LYM MON EOS RBC HCT MCH MCV; do
+for pop in EUR EAS; do
+python /gpfs/gibbs/pi/zhao/lx94/Software/ldsc/munge_sumstats.py --sumstats /gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/${trait}_${pop}_inter_ldsc.txt --out /gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/${trait}_${pop}_inter_ldsc
+done
+done
+
+# 3.1.3 Blood method data
+## Sample size
+## WBC EUR_inter:559083 EAS_inter:179000
+## NEU EUR_inter:517889 EAS_inter:179000
+## LYM EUR_inter:523524 EAS_inter:179000
+## MON EUR_inter:520195 EAS_inter:179000
+## EOS EUR_inter:473152 EAS_inter:179000
+## RBC EUR_inter:542043 EAS_inter:179000
+## HCT EUR_inter:559099 EAS_inter:179000
+## MCH EUR_inter:483664 EAS_inter:179000
+## MCV EUR_inter:540967 EAS_inter:179000
+
+library(readr)
+library(data.table)
+
+for (trait in c("WBC","NEU","LYM","MON","EOS","RBC","HCT","MCH","MCV")){
+for (pop in c("EUR","EAS")){
+    # sumstat obtain
+    sumstat_inter = fread(paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/",trait,"_",pop,"_inter.txt"))
+    
+    # ldsc data
+    sumstat_inter_ldsc = read_tsv(paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/",trait,"_",pop,"_inter_ldsc.sumstats.gz"))
+
+    # clean sumstat
+    sumstat_inter_clean = sumstat_inter[which(sumstat_inter$SNP %in% sumstat_inter_ldsc$SNP),c("SNP","CHR","POS","A1","A2","N","MAF","BETA","SE","Z","P")]
+    colnames(sumstat_inter_clean) = c("SNP","CHR","POS","A1","A2","N","MAF","BETA","SE","Z","P")
+    write.table(sumstat_inter_clean, file=paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/clean/",trait,"_",pop,"_inter_clean.txt"), row.names=F, col.names=T, quote=F, append=F, sep = "\t")
+
+    print(paste0(trait," ", pop, " inter median sample size: ", median(sumstat_inter_clean$N)))
+
+    # popcorn
+    sumstat_inter_popcorn = sumstat_inter_clean[,c("SNP", "A1", "A2", "MAF", "N", "BETA", "SE", "Z")]
+    colnames(sumstat_inter_popcorn) = c("rsid", "a1", "a2", "af", "N", "beta", "SE", "Z")
+    write.table(sumstat_inter_popcorn, file=paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/popcorn/",trait,"_",pop,"_inter_popcorn.txt"), row.names=F, col.names=T, quote=F, append=F, sep = "\t")
+
+    # PRScsx
+    sumstat_inter_PRScsx = sumstat_inter_clean[,c("SNP","A1","A2","BETA","P")]
+    write.table(sumstat_inter_PRScsx, file=paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/PRScsx/",trait,"_",pop,"_inter_PRScsx.txt"), row.names=F, col.names=T, quote=F, append=F, sep = "\t")
+
+    # SDPRX
+    sumstat_inter_SDPRX = sumstat_inter_clean[,c("SNP","A1","A2","Z","P","N")]
+    write.table(sumstat_inter_SDPRX, file=paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/SDPRX/",trait,"_",pop,"_inter_SDPRX.txt"), row.names=F, col.names=T, quote=F, append=F, sep = "\t")
+
+    # XPXP
+    sumstat_inter_XPXP = sumstat_inter_clean[,c("SNP","N","Z","A1","A2","P")]
+    write.table(sumstat_inter_XPXP, file=paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/XPXP/",trait,"_",pop,"_inter_XPXP.txt"), row.names=F, col.names=T, quote=F, append=F, sep = "\t")
+
+    # PROSPER
+    sumstat_inter_PROSPER = sumstat_inter_clean[,c("SNP","CHR","A1","A2","BETA","SE","N")]
+    colnames(sumstat_inter_PROSPER) = c("rsid","chr","a1","a0","beta","beta_se","n_eff")
+    write.table(sumstat_inter_PROSPER, file=paste0("/gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/PROSPER/",trait,"_",pop,"_inter_PROSPER.txt"), row.names=F, col.names=T, quote=F, append=F, sep = "\t")
+
+}
+}
+
+
+# 3.1.4 Clean unnecessary data
+cd /gpfs/gibbs/pi/zhao/lx94/JointPRS/revision/data/summary_data/
+
+for trait in WBC NEU LYM MON EOS RBC HCT MCH MCV; do
+rm -rf ${trait}*.log
+rm -rf ${trait}*.gz
+rm -rf ${trait}*.txt
+done
