@@ -11,7 +11,7 @@ sample_size1=88825; sample_size2=118493; rho=0.87
 elif [[ ${pop2} == "EAS" && ${trait} == "BrC" ]]; then
 sample_size1=245620; sample_size2=27138; rho=0.88
 elif [[ ${pop2} == "EAS" && ${trait} == "CAD" ]]; then
-sample_size1=61333; sample_size2=101092 rho=0.79
+sample_size1=61333; sample_size2=101092; rho=0.79
 elif [[ ${pop2} == "EAS" && ${trait} == "LuC" ]]; then
 sample_size1=77095; sample_size2=15891; rho=0.99
 else
