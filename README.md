@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/926952501.svg)](https://doi.org/10.5281/zenodo.15060561)
+
 # JointPRS_analysis  
 This repository contains the codes used for **simulation studies, real-data analyses and main figure plot** in the **JointPRS** paper.  
 
