@@ -1,5 +1,5 @@
 # JointPRS_analysis  
-This repository contains the codes used for **simulation and real-data analyses** in the **JointPRS** paper.  
+This repository contains the codes used for **simulation studies, real-data analyses and main figure plot** in the **JointPRS** paper.  
 
 ## Overview  
 **JointPRS** is a multi-population PRS model that only requires GWAS summary statistics and LD reference panel from multiple populations. When individual-level tuning data is available, it adpots a data-adaptive apporach that combines meta-analysis and tuning strategies.
@@ -24,7 +24,8 @@ JointPRS is compared with **six state-of-the-art PRS methods**:
 
 ## Directory Structure  
 - `Simulation/` – Contains scripts for **simulation studies** evaluating JointPRS and six exsiting methods under different settings.  
-- `Real_data/` – Contains scripts for **real data analysis** evaluating JointPRS and six exsiting methods with 22 quantitative traits and 4 binary traits in UKBB and AoU.  
+- `Real_data/` – Contains scripts for **real data analysis** evaluating JointPRS and six exsiting methods with 22 quantitative traits and 4 binary traits in UKBB and AoU.
+- `Main_figure` - Contains scripts for **main figure plot** presenting main simulation studies and real data analysis results.
 
 ## Support
 Please direct any problems or questions to Leqi Xu (leqi.xu@yale.edu).
