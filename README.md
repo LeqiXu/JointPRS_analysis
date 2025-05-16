@@ -26,7 +26,7 @@ JointPRS is compared with **six state-of-the-art PRS methods**:
 
 ## Directory Structure  
 - `Simulation/` – Contains scripts for **simulation studies** evaluating JointPRS and six exsiting methods under different settings.  
-- `Real_data/` – Contains scripts for **real data analysis** evaluating JointPRS and six exsiting methods with 22 quantitative traits and 4 binary traits in UKBB and AoU.
+- `Real_data/` – Contains scripts for **real data analyses** evaluating JointPRS and six exsiting methods with 22 quantitative traits and 4 binary traits in UKBB and AoU.
 - `Main_figure` - Contains scripts for **main figure plot** presenting main simulation studies and real data analysis results.
 
 ## Support
