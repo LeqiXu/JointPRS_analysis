@@ -33,4 +33,4 @@ JointPRS is compared with **six state-of-the-art PRS methods**:
 Please direct any problems or questions to Leqi Xu (leqi.xu@yale.edu).
 
 ## Citation  
-Xu L, Zhou G, Jiang W, Zhang H, Dong Y, Guan L, Zhao H. JointPRS: A Data-Adaptive Framework for Multi-Population Genetic Risk Prediction Incorporating Genetic Correlation. bioRxiv. 2024 Sept 1:2023-10. (https://www.biorxiv.org/content/10.1101/2023.10.29.564615v4)
+Xu, L., Zhou, G., Jiang, W., Zhang, H., Dong, Y., Guan, L., & Zhao, H. (2025). JointPRS: A data-adaptive framework for multi-population genetic risk prediction incorporating genetic correlation. Nature Communications, 16(1), 3841.
